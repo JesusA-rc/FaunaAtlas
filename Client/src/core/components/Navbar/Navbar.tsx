@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaTree } from 'react-icons/fa';
 
 const Navbar = () => 
 {
@@ -29,34 +29,46 @@ const Navbar = () =>
         border-white/5">
         <div className="container flex justify-between items-center w-full">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-navy border-2 border-mint rounded-lg flex items-center justify-center">
-              <div className="w-4 h-4 bg-mint rounded-full animate-pulse"></div>
+            <div className="
+              w-10 
+              h-10 
+              bg-navy 
+              border-2 
+              border-mint 
+              rounded-lg 
+              flex 
+              items-center 
+              justify-center 
+              text-mint 
+              text-xl 
+              shadow-[0_0_15px_rgba(76,201,138,0.3)]">
+              <FaTree />
             </div>
             <span className="font-heading font-bold text-xl text-white tracking-tight">Fauna Atlas</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-12">
-            <ul className="flex list-none gap-8">
+          <div className="hidden md:flex flex-col items-end gap-2 mt-2">
+            <div className="flex items-center gap-4">
+              <button className="text-white/80 text-sm font-medium hover:text-mint transition-colors">
+                Ingresar
+              </button>
+              <button className="button-primary !px-5 !py-1.5 !text-xs">
+                Empezar
+              </button>
+            </div>
+
+            <ul className="flex list-none gap-8 mb-1">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <a 
                     href={link.href} 
-                    className="no-underline text-slate text-sm font-medium transition-colors hover:text-white"
+                    className="no-underline text-slate text-[13px] font-medium transition-colors hover:text-white"
                   >
                     {link.name}
                   </a>
                 </li>
               ))}
             </ul>
-            
-            <div className="flex items-center gap-6">
-              <button className="text-white text-sm font-medium hover:text-mint transition-colors">
-                Ingresar
-              </button>
-              <button className="button-primary !px-6 !py-2 !text-xs">
-                Empezar
-              </button>
-            </div>
           </div>
 
           <button 
