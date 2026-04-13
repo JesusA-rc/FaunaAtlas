@@ -1,3 +1,4 @@
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<DataContext>(opt =>
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 using (var scope = app.Services.CreateScope())
