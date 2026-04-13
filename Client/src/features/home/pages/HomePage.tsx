@@ -1,6 +1,7 @@
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import SplitSection from './SplitSection';
+import PricingSection from '../components/PricingSection';
 
 const HomePage = () => 
 {
@@ -8,6 +9,7 @@ const HomePage = () =>
     <main>
       <Hero />
       <SplitSection />
+      <PricingSection />
       <Footer />
     </main>
   );
