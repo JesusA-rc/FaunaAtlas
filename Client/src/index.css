@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #011E40;
+  --color-slate: #C7D2D6;
+  --color-teal: #025849;
+  --color-white-green: #F5F8F2;
+  --color-mint: #4CC98A;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Outfit", sans-serif;
+
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer components {
+  .button-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-300;
+    @apply bg-mint text-navy font-heading no-underline;
+  }
+
+  .button-primary:hover {
+    @apply -translate-y-0.5 shadow-[0_10px_20px_rgba(76,201,138,0.3)] brightness-110;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-300;
+    @apply bg-teal text-white font-heading no-underline;
+  }
+
+  .button-secondary:hover {
+    @apply -translate-y-0.5 bg-[#026b5a];
+  }
+
+  .bg-surface {
+    @apply bg-[#061B35] border border-white/5 shadow-xl;
+  }
+  
+  .container {
+    @apply max-w-[1200px] mx-auto px-6;
+  }
+}
