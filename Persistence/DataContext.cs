@@ -12,6 +12,7 @@ public class DataContext : DbContext
     public DbSet<Habitat> Habitats { get; set; } = null!;
     public DbSet<Animal> Animales { get; set; } = null!;
     public DbSet<Avistamiento> Avistamientos { get; set; } = null!;
+    public DbSet<Noticia> Noticias { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,5 +25,17 @@ public class DataContext : DbContext
         modelBuilder.Entity<Avistamiento>()
             .Property(a => a.Longitud)
             .HasPrecision(18, 10);
+
+        modelBuilder.Entity<Noticia>()
+            .HasOne(n => n.Animal)
+            .WithMany()
+            .HasForeignKey(n => n.AnimalId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Noticia>()
+            .HasOne(n => n.Habitat)
+            .WithMany()
+            .HasForeignKey(n => n.HabitatId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
