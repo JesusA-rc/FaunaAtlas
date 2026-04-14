@@ -49,3 +49,13 @@ export interface Avistamiento {
     longitud: number;
     animal?: Animal;
 }
+
+export interface Usuario {
+    id: number;
+    userName: string;
+    email: string;
+    nombreCompleto: string;
+    rol: 'Admin' | 'Usuario';
+    fechaRegistro: string;
+    ultimoLogin?: string;
+}

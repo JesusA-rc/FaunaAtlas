@@ -7,6 +7,32 @@ public static class Seed
 {
     public static async Task SeedData(DataContext context)
     {
+        if (!context.Usuarios.Any())
+        {
+            var usuarios = new List<Usuario>
+            {
+                new Usuario 
+                { 
+                    UserName = "admin", 
+                    Email = "admin@fauna.com", 
+                    PasswordHash = "admin123",
+                    NombreCompleto = "Administrador del Atlas",
+                    Rol = UserRole.Admin
+                },
+                new Usuario 
+                { 
+                    UserName = "juan_explorador", 
+                    Email = "juan@correo.com", 
+                    PasswordHash = "usuario123",
+                    NombreCompleto = "Juan Pérez",
+                    Rol = UserRole.Usuario
+                }
+            };
+
+            await context.Usuarios.AddRangeAsync(usuarios);
+            await context.SaveChangesAsync();
+        }
+
         if (!context.Habitats.Any())
         {
             var habitatsList = new List<Habitat>

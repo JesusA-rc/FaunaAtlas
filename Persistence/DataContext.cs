@@ -13,10 +13,19 @@ public class DataContext : DbContext
     public DbSet<Animal> Animales { get; set; } = null!;
     public DbSet<Avistamiento> Avistamientos { get; set; } = null!;
     public DbSet<Noticia> Noticias { get; set; } = null!;
+    public DbSet<Usuario> Usuarios { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.UserName)
+            .IsUnique();
 
         modelBuilder.Entity<Avistamiento>()
             .Property(a => a.Latitud)
