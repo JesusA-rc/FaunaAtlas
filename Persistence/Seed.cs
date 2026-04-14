@@ -9,13 +9,18 @@ public static class Seed
     {
         if (!context.Usuarios.Any())
         {
+            using var hmac = new System.Security.Cryptography.HMACSHA512();
+            var passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes("123456"));
+            var passwordSalt = hmac.Key;
+
             var usuarios = new List<Usuario>
             {
                 new Usuario 
                 { 
                     UserName = "admin", 
                     Email = "admin@fauna.com", 
-                    PasswordHash = "admin123",
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
                     NombreCompleto = "Administrador del Atlas",
                     Rol = UserRole.Admin
                 },
@@ -23,7 +28,8 @@ public static class Seed
                 { 
                     UserName = "juan_explorador", 
                     Email = "juan@correo.com", 
-                    PasswordHash = "usuario123",
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
                     NombreCompleto = "Juan Pérez",
                     Rol = UserRole.Usuario
                 }

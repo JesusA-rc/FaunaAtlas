@@ -1,3 +1,4 @@
+using API.Extensions;
 using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -20,6 +21,8 @@ builder.Services.AddCors(opt =>
         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5173");
     });
 });
+
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -51,6 +54,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
