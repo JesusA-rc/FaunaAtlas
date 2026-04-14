@@ -1,10 +1,11 @@
 import { requests } from '../api/agent';
+import { type Habitat } from '../models';
 
 const habitatService = {
-    list: () => requests.get<any[]>('/habitats'),
-    details: (id: number) => requests.get<any>(`/habitats/${id}`),
-    create: (habitat: any) => requests.post<any>('/habitats', habitat),
-    update: (id: number, habitat: any) => requests.put<void>(`/habitats/${id}`, habitat),
+    list: () => requests.get<Habitat[]>('/habitats'),
+    details: (id: number) => requests.get<Habitat>(`/habitats/${id}`),
+    create: (habitat: Habitat) => requests.post<Habitat>('/habitats', habitat),
+    update: (id: number, habitat: Habitat) => requests.put<void>(`/habitats/${id}`, habitat),
     delete: (id: number) => requests.del<void>(`/habitats/${id}`),
 };
 
