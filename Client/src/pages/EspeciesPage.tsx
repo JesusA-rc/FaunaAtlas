@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import animalService from '../../../core/services/animalService';
+import animalService from '../core/services/animalService';
 import { FaArrowRight, FaSearch } from 'react-icons/fa';
-import { type Animal } from '../../../core/models';
-import StatusDisplay from '../../../core/components/Common/StatusDisplay';
+import { type Animal } from '../core/models';
+import StatusDisplay from '../components/Common/StatusDisplay';
 
 const EspeciesPage = () => 
 {

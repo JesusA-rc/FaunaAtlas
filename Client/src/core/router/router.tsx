@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import AppLayout from '../layout/AppLayout';
-import HomePage from '../../features/home/pages/HomePage';
-import EspeciesPage from '../../features/especies/pages/EspeciesPage';
-import HabitatsPage from '../../features/habitats/pages/HabitatsPage';
-import AvistamientosPage from '../../features/avistamientos/pages/AvistamientosPage';
+import HomePage from '../../pages/HomePage';
+import EspeciesPage from '../../pages/EspeciesPage';
+import HabitatsPage from '../../pages/HabitatsPage';
+import AvistamientosPage from '../../pages/AvistamientosPage';
 
 export const router = createBrowserRouter([
   {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import habitatService from '../../../core/services/habitatService';
-import { type Habitat } from '../../../core/models';
+import habitatService from '../core/services/habitatService';
+import { type Habitat } from '../core/models';
 import { FaArrowRight, FaCloudSun, FaGlobeAmericas } from 'react-icons/fa';
-import StatusDisplay from '../../../core/components/Common/StatusDisplay';
+import StatusDisplay from '../components/Common/StatusDisplay';
 
 const HabitatsPage = () => 
 {

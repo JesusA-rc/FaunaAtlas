@@ -1,4 +1,4 @@
-import heroBg from './../../../assets/herobg.png';
+import heroBg from '../assets/herobg.png';
 import Badge from './Badge';
 
 const Hero = () => 

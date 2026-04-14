@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { FaArrowRight, FaCalendarAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import animalService from '../../../core/services/animalService';
-import habitatService from '../../../core/services/habitatService';
-import noticiaService from '../../../core/services/noticiaService';
-import { type Animal, type Habitat, type Noticia } from '../../../core/models';
+import animalService from '../core/services/animalService';
+import habitatService from '../core/services/habitatService';
+import noticiaService from '../core/services/noticiaService';
+import { type Animal, type Habitat, type Noticia } from '../core/models';
 
 const DiscoverySection = () => 
 {
