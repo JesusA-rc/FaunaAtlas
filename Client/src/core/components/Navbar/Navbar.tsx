@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { FaBars, FaTimes, FaTree } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => 
 {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Especies', href: '#especies' },
-    { name: 'Hábitats', href: '#habitats' },
-    { name: 'Avistamientos', href: '#avistamientos' },
-    { name: 'Regiones', href: '#regiones' },
+    { name: 'Home', to: '/' },
+    { name: 'Especies', to: '/especies' },
+    { name: 'Hábitats', to: '/habitats' },
+    { name: 'Avistamientos', to: '/avistamientos' }
   ];
 
   return (
@@ -60,12 +61,15 @@ const Navbar = () =>
             <ul className="flex list-none gap-8 mb-1">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a 
-                    href={link.href} 
-                    className="no-underline text-slate text-[13px] font-medium transition-colors hover:text-white"
+                  <NavLink 
+                    to={link.to} 
+                    className={({ isActive }) => `
+                      no-underline text-[13px] font-medium transition-colors 
+                      ${isActive ? 'text-mint' : 'text-slate hover:text-white'}
+                    `}
                   >
                     {link.name}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -88,13 +92,16 @@ const Navbar = () =>
           <ul className="flex flex-col gap-6 list-none">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a 
-                  href={link.href}
+                <NavLink 
+                  to={link.to}
                   onClick={() => setIsOpen(false)}
-                  className="text-2xl font-heading text-white hover:text-mint transition-colors"
+                  className={({ isActive }) => `
+                    text-2xl font-heading transition-colors
+                    ${isActive ? 'text-mint' : 'text-white hover:text-mint'}
+                  `}
                 >
                   {link.name}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>

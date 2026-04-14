@@ -1,4 +1,3 @@
-import Navbar from '../../../core/components/Navbar/Navbar';
 import heroBg from './../../../assets/herobg.png';
 import Badge from './Badge';
 
@@ -9,7 +8,6 @@ const Hero = () =>
       className="relative min-h-screen flex items-center bg-cover bg-center px-6 pt-[100px] pb-32 overflow-hidden"
       style={{ backgroundImage: `url(${heroBg})` }}
     >
-      <Navbar />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-navy/90 to-navy/40 z-10"></div>
 
       <div className="relative z-20 container grid grid-cols-1 lg:grid-cols-2 items-center gap-20">

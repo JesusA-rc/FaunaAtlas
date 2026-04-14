@@ -3,12 +3,13 @@ import { FaArrowRight, FaCalendarAlt, FaChevronLeft, FaChevronRight } from 'reac
 import animalService from '../../../core/services/animalService';
 import habitatService from '../../../core/services/habitatService';
 import noticiaService from '../../../core/services/noticiaService';
+import { type Animal, type Habitat, type Noticia } from '../../../core/models';
 
 const DiscoverySection = () => 
 {
-  const [animales, setAnimales] = useState<any[]>([]);
-  const [habitats, setHabitats] = useState<any[]>([]);
-  const [noticias, setNoticias] = useState<any[]>([]);
+  const [animales, setAnimales] = useState<Animal[]>([]);
+  const [habitats, setHabitats] = useState<Habitat[]>([]);
+  const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [loading, setLoading] = useState(true);
   
   const [activeTab, setActiveTab] = useState<'animales' | 'habitats'>('animales');
@@ -219,7 +220,7 @@ const DiscoverySection = () =>
   );
 };
 
-const NewsItem = ({ noticia }: { noticia: any }) => 
+const NewsItem = ({ noticia }: { noticia: Noticia }) => 
 {
   const fallback = '/animales.png';
   const [imgSrc, setImgSrc] = useState(noticia.imagenUrl || fallback);
@@ -306,7 +307,7 @@ const NewsItem = ({ noticia }: { noticia: any }) =>
   );
 };
 
-const DiscoveryItem = ({ item, activeTab }: { item: any; activeTab: string }) => 
+const DiscoveryItem = ({ item, activeTab }: { item: Animal | Habitat; activeTab: 'animales' | 'habitats' }) => 
 {
   const fallback = activeTab === 'animales' ? '/animales.png' : '/habitats.png';
   const [imgSrc, setImgSrc] = useState(item.imagenUrl || fallback);
@@ -333,7 +334,7 @@ const DiscoveryItem = ({ item, activeTab }: { item: any; activeTab: string }) =>
     >
       <img 
         src={imgSrc} 
-        alt={item.nombre || item.nombreComun}
+        alt={activeTab === 'animales' ? (item as Animal).nombreComun : (item as Habitat).nombre}
         onError={() => setImgSrc(fallback)}
         className="
           w-full 
@@ -370,10 +371,10 @@ const DiscoveryItem = ({ item, activeTab }: { item: any; activeTab: string }) =>
         <div className="flex justify-between items-center">
           <div>
             <span className="text-mint text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block">
-              {activeTab === 'animales' ? item.clase : item.tipo}
+              {activeTab === 'animales' ? (item as Animal).clase : (item as Habitat).tipo}
             </span>
             <h4 className="text-white text-xl font-bold font-heading group-hover:text-mint transition-colors">
-              {activeTab === 'animales' ? item.nombreComun : item.nombre}
+              {activeTab === 'animales' ? (item as Animal).nombreComun : (item as Habitat).nombre}
             </h4>
           </div>
           <div className="

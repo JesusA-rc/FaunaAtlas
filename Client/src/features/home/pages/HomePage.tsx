@@ -1,4 +1,3 @@
-import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import DiscoverySection from '../components/DiscoverySection';
 import SplitSection from './SplitSection';
@@ -12,7 +11,6 @@ const HomePage = () =>
       <DiscoverySection />
       <SplitSection />
       <PricingSection />
-      <Footer />
     </main>
   );
 };
