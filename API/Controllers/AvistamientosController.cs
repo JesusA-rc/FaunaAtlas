@@ -3,6 +3,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Application.Extensions;
 
 namespace API.Controllers;
 
@@ -11,132 +12,61 @@ public class AvistamientosController(DataContext context) : BaseApiController
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AvistamientoDto>>> GetAvistamientos()
     {
-        return await context.Avistamientos
+        var sightings = await context.Avistamientos
             .Include(a => a.Animal)
             .ThenInclude(an => an.Habitat)
             .OrderByDescending(a => a.Fecha)
-            .Select(a => new AvistamientoDto
-            {
-                Id = a.Id,
-                AnimalId = a.AnimalId,
-                AnimalNombre = a.Animal != null ? a.Animal.NombreComun : "Desconocido",
-                Ubicacion = a.Ubicacion,
-                Fecha = a.Fecha,
-                ReportadoPor = a.ReportadoPor,
-                Notas = a.Notas,
-                Latitud = a.Latitud,
-                Longitud = a.Longitud,
-                Animal = a.Animal != null ? new AnimalDto
-                {
-                    Id = a.Animal.Id,
-                    NombreComun = a.Animal.NombreComun,
-                    NombreCientifico = a.Animal.NombreCientifico,
-                    Clase = a.Animal.Clase,
-                    EstadoConservacion = a.Animal.EstadoConservacion,
-                    Dieta = a.Animal.Dieta,
-                    Descripcion = a.Animal.Descripcion,
-                    ImagenUrl = a.Animal.ImagenUrl,
-                    HabitatId = a.Animal.HabitatId,
-                    HabitatNombre = a.Animal.Habitat != null ? a.Animal.Habitat.Nombre : "No definido"
-                } : null
-            })
             .ToListAsync();
+            
+        return Ok(sightings.Select(a => a.ToDto()));
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<AvistamientoDto>> GetAvistamiento(int id)
     {
-        var avistamiento = await context.Avistamientos
+        var sighting = await context.Avistamientos
             .Include(a => a.Animal)
             .ThenInclude(an => an.Habitat)
             .FirstOrDefaultAsync(a => a.Id == id);
 
-        if (avistamiento == null) return NotFound();
+        if (sighting == null) return NotFound();
 
-        return new AvistamientoDto
-        {
-            Id = avistamiento.Id,
-            AnimalId = avistamiento.AnimalId,
-            AnimalNombre = avistamiento.Animal != null ? avistamiento.Animal.NombreComun : "Desconocido",
-            Ubicacion = avistamiento.Ubicacion,
-            Fecha = avistamiento.Fecha,
-            ReportadoPor = avistamiento.ReportadoPor,
-            Notas = avistamiento.Notas,
-            Latitud = avistamiento.Latitud,
-            Longitud = avistamiento.Longitud,
-            Animal = avistamiento.Animal != null ? new AnimalDto
-            {
-                Id = avistamiento.Animal.Id,
-                NombreComun = avistamiento.Animal.NombreComun,
-                NombreCientifico = avistamiento.Animal.NombreCientifico,
-                Clase = avistamiento.Animal.Clase,
-                EstadoConservacion = avistamiento.Animal.EstadoConservacion,
-                Dieta = avistamiento.Animal.Dieta,
-                Descripcion = avistamiento.Animal.Descripcion,
-                ImagenUrl = avistamiento.Animal.ImagenUrl,
-                HabitatId = avistamiento.Animal.HabitatId,
-                HabitatNombre = avistamiento.Animal.Habitat != null ? avistamiento.Animal.Habitat.Nombre : "No definido"
-            } : null
-        };
+        return sighting.ToDto();
     }
 
     [HttpPost]
     public async Task<ActionResult<AvistamientoDto>> CreateAvistamiento(AvistamientoDto avistamientoDto)
     {
         if (!await context.Animales.AnyAsync(a => a.Id == avistamientoDto.AnimalId))
-        {
             return BadRequest("El Animal especificado no existe.");
-        }
 
-        var avistamiento = new Avistamiento
-        {
-            AnimalId = avistamientoDto.AnimalId,
-            Ubicacion = avistamientoDto.Ubicacion,
-            Fecha = avistamientoDto.Fecha,
-            ReportadoPor = avistamientoDto.ReportadoPor,
-            Notas = avistamientoDto.Notas,
-            Latitud = avistamientoDto.Latitud,
-            Longitud = avistamientoDto.Longitud
-        };
+        var avistamiento = new Avistamiento();
+        avistamientoDto.UpdateEntity(avistamiento);
 
         context.Avistamientos.Add(avistamiento);
         await context.SaveChangesAsync();
 
-        var animal = await context.Animales.FindAsync(avistamiento.AnimalId);
-        avistamientoDto.Id = avistamiento.Id;
-        avistamientoDto.AnimalNombre = animal?.NombreComun ?? "Desconocido";
+        var created = await context.Avistamientos
+            .Include(a => a.Animal)
+            .FirstAsync(a => a.Id == avistamiento.Id);
 
-        return CreatedAtAction(nameof(GetAvistamiento), new { id = avistamiento.Id }, avistamientoDto);
+        return CreatedAtAction(nameof(GetAvistamiento), new { id = created.Id }, created.ToDto());
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAvistamiento(int id, AvistamientoDto avistamientoDto)
     {
-        if (id != avistamientoDto.Id) return BadRequest();
-
         var avistamiento = await context.Avistamientos.FindAsync(id);
         if (avistamiento == null) return NotFound();
 
         if (avistamiento.AnimalId != avistamientoDto.AnimalId 
             && !await context.Animales.AnyAsync(a => a.Id == avistamientoDto.AnimalId))
-        {
             return BadRequest("El Animal especificado no existe.");
-        }
 
-        avistamiento.AnimalId = avistamientoDto.AnimalId;
-        avistamiento.Ubicacion = avistamientoDto.Ubicacion;
-        avistamiento.Fecha = avistamientoDto.Fecha;
-        avistamiento.ReportadoPor = avistamientoDto.ReportadoPor;
-        avistamiento.Notas = avistamientoDto.Notas;
-        avistamiento.Latitud = avistamientoDto.Latitud;
-        avistamiento.Longitud = avistamientoDto.Longitud;
-
+        avistamientoDto.UpdateEntity(avistamiento);
         await context.SaveChangesAsync();
 
-        var animal = await context.Animales.FindAsync(avistamiento.AnimalId);
-        avistamientoDto.AnimalNombre = animal?.NombreComun ?? "Desconocido";
-
-        return Ok(avistamientoDto);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
