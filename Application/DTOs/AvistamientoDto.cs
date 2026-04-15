@@ -4,6 +4,7 @@ public class AvistamientoDto
 {
     public int Id { get; set; }
     public int AnimalId { get; set; }
+    public string AnimalNombre { get; set; } = string.Empty;
     public string Ubicacion { get; set; } = string.Empty;
     public DateTime Fecha { get; set; }
     public string ReportadoPor { get; set; } = string.Empty;

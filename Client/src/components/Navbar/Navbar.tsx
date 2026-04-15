@@ -40,6 +40,15 @@ const Navbar = () =>
         { name: 'Actualizar', to: '/admin/habitats/actualizar' },
         { name: 'Eliminar', to: '/admin/habitats/eliminar' },
       ]
+    },
+    {
+      name: 'Avistamientos',
+      subLinks: [
+        { name: 'Ver', to: '/admin/avistamientos/ver' },
+        { name: 'Crear', to: '/admin/avistamientos/crear' },
+        { name: 'Actualizar', to: '/admin/avistamientos/actualizar' },
+        { name: 'Eliminar', to: '/admin/avistamientos/eliminar' },
+      ]
     }
   ];
 

@@ -41,6 +41,7 @@ export interface Noticia {
 export interface Avistamiento {
     id: number;
     animalId: number;
+    animalNombre?: string;
     ubicacion: string;
     fecha: string;
     reportadoPor: string;

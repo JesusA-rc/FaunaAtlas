@@ -14,6 +14,9 @@ import UpdateAnimalPage from '../../pages/Admin/UpdateAnimalPage';
 import CreateHabitatPage from '../../pages/Admin/CreateHabitatPage';
 import AdminHabitatListPage from '../../pages/Admin/AdminHabitatListPage';
 import UpdateHabitatPage from '../../pages/Admin/UpdateHabitatPage';
+import CreateAvistamientoPage from '../../pages/Admin/CreateAvistamientoPage';
+import AdminAvistamientoListPage from '../../pages/Admin/AdminAvistamientoListPage';
+import UpdateAvistamientoPage from '../../pages/Admin/UpdateAvistamientoPage';
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +97,31 @@ export const router = createBrowserRouter([
               {
                 path: 'eliminar',
                 element: <AdminHabitatListPage />,
+              },
+            ]
+          },
+          {
+            path: 'avistamientos',
+            children: [
+              {
+                path: 'crear',
+                element: <CreateAvistamientoPage />,
+              },
+              {
+                path: 'ver',
+                element: <AdminAvistamientoListPage />,
+              },
+              {
+                path: 'actualizar',
+                element: <AdminAvistamientoListPage />,
+              },
+              {
+                path: 'actualizar/:id',
+                element: <UpdateAvistamientoPage />,
+              },
+              {
+                path: 'eliminar',
+                element: <AdminAvistamientoListPage />,
               },
             ]
           },

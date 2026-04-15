@@ -12,10 +12,12 @@ public class AvistamientosController(DataContext context) : BaseApiController
     public async Task<ActionResult<IEnumerable<AvistamientoDto>>> GetAvistamientos()
     {
         return await context.Avistamientos
+            .Include(a => a.Animal)
             .Select(a => new AvistamientoDto
             {
                 Id = a.Id,
                 AnimalId = a.AnimalId,
+                AnimalNombre = a.Animal != null ? a.Animal.NombreComun : "Desconocido",
                 Ubicacion = a.Ubicacion,
                 Fecha = a.Fecha,
                 ReportadoPor = a.ReportadoPor,
@@ -29,7 +31,9 @@ public class AvistamientosController(DataContext context) : BaseApiController
     [HttpGet("{id}")]
     public async Task<ActionResult<AvistamientoDto>> GetAvistamiento(int id)
     {
-        var avistamiento = await context.Avistamientos.FindAsync(id);
+        var avistamiento = await context.Avistamientos
+            .Include(a => a.Animal)
+            .FirstOrDefaultAsync(a => a.Id == id);
 
         if (avistamiento == null) return NotFound();
 
@@ -37,6 +41,7 @@ public class AvistamientosController(DataContext context) : BaseApiController
         {
             Id = avistamiento.Id,
             AnimalId = avistamiento.AnimalId,
+            AnimalNombre = avistamiento.Animal != null ? avistamiento.Animal.NombreComun : "Desconocido",
             Ubicacion = avistamiento.Ubicacion,
             Fecha = avistamiento.Fecha,
             ReportadoPor = avistamiento.ReportadoPor,
@@ -68,7 +73,10 @@ public class AvistamientosController(DataContext context) : BaseApiController
         context.Avistamientos.Add(avistamiento);
         await context.SaveChangesAsync();
 
+        var animal = await context.Animales.FindAsync(avistamiento.AnimalId);
         avistamientoDto.Id = avistamiento.Id;
+        avistamientoDto.AnimalNombre = animal?.NombreComun ?? "Desconocido";
+
         return CreatedAtAction(nameof(GetAvistamiento), new { id = avistamiento.Id }, avistamientoDto);
     }
 
@@ -96,7 +104,10 @@ public class AvistamientosController(DataContext context) : BaseApiController
 
         await context.SaveChangesAsync();
 
-        return NoContent();
+        var animal = await context.Animales.FindAsync(avistamiento.AnimalId);
+        avistamientoDto.AnimalNombre = animal?.NombreComun ?? "Desconocido";
+
+        return Ok(avistamientoDto);
     }
 
     [HttpDelete("{id}")]

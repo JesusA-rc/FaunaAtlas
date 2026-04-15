@@ -21,7 +21,7 @@ const AdminDashboard = () =>
     { 
       name: 'Avistamientos', 
       icon: <FaMapMarkedAlt />, 
-      path: '/admin/avistamientos',
+      path: '/admin/avistamientos/ver',
       desc: 'Revisar reportes de avistamientos recibidos.' 
     },
     { 
