@@ -17,6 +17,7 @@ import UpdateHabitatPage from '../../pages/Admin/UpdateHabitatPage';
 import CreateAvistamientoPage from '../../pages/Admin/CreateAvistamientoPage';
 import AdminAvistamientoListPage from '../../pages/Admin/AdminAvistamientoListPage';
 import UpdateAvistamientoPage from '../../pages/Admin/UpdateAvistamientoPage';
+import NotFoundPage from '../../pages/NotFoundPage';
 
 export const router = createBrowserRouter([
   {
@@ -126,6 +127,10 @@ export const router = createBrowserRouter([
             ]
           },
         ],
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },
