@@ -47,6 +47,11 @@ public class HabitatsController(DataContext context) : BaseApiController
     [HttpPost]
     public async Task<ActionResult<HabitatDto>> CreateHabitat(HabitatDto habitatDto)
     {
+        if (await context.Habitats.AnyAsync(h => h.Nombre == habitatDto.Nombre))
+        {
+            return BadRequest("Ya existe un hábitat con este nombre.");
+        }
+
         var habitat = new Habitat
         {
             Nombre = habitatDto.Nombre,
@@ -71,6 +76,11 @@ public class HabitatsController(DataContext context) : BaseApiController
 
         var habitat = await context.Habitats.FindAsync(id);
         if (habitat == null) return NotFound();
+
+        if (await context.Habitats.AnyAsync(h => h.Id != id && h.Nombre == habitatDto.Nombre))
+        {
+            return BadRequest("Ya existe otro hábitat con este nombre.");
+        }
 
         habitat.Nombre = habitatDto.Nombre;
         habitat.Tipo = habitatDto.Tipo;

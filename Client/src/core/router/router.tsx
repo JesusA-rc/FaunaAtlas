@@ -11,6 +11,9 @@ import AdminRoute from './AdminRoute';
 import CreateAnimalPage from '../../pages/Admin/CreateAnimalPage';
 import AdminAnimalListPage from '../../pages/Admin/AdminAnimalListPage';
 import UpdateAnimalPage from '../../pages/Admin/UpdateAnimalPage';
+import CreateHabitatPage from '../../pages/Admin/CreateHabitatPage';
+import AdminHabitatListPage from '../../pages/Admin/AdminHabitatListPage';
+import UpdateHabitatPage from '../../pages/Admin/UpdateHabitatPage';
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +71,31 @@ export const router = createBrowserRouter([
           {
             path: 'ver',
             element: <AdminAnimalListPage />,
+          },
+          {
+            path: 'habitats',
+            children: [
+              {
+                path: 'crear',
+                element: <CreateHabitatPage />,
+              },
+              {
+                path: 'ver',
+                element: <AdminHabitatListPage />,
+              },
+              {
+                path: 'actualizar',
+                element: <AdminHabitatListPage />,
+              },
+              {
+                path: 'actualizar/:id',
+                element: <UpdateHabitatPage />,
+              },
+              {
+                path: 'eliminar',
+                element: <AdminHabitatListPage />,
+              },
+            ]
           },
         ],
       },
