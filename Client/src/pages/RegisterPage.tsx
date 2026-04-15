@@ -22,6 +22,7 @@ const RegisterPage = () =>
   const {
     handleSubmit,
     control,
+    setError,
     formState: { isSubmitting },
   } = useForm<UserFormValues>({
     resolver: zodResolver(registerSchema),
@@ -39,8 +40,14 @@ const RegisterPage = () =>
       const userRes = await AccountService.register(values);
       login(userRes);
       navigate('/');
-    } catch (error) {
-      console.error('Error en el registro:', error);
+    } catch (error: any) {
+      if (error.response?.data === 'username_taken') {
+        setError('username', { type: 'manual', message: 'Este nombre de usuario ya está en uso' });
+      } else if (error.response?.data === 'email_taken') {
+        setError('email', { type: 'manual', message: 'Este correo electrónico ya está registrado' });
+      } else {
+        console.error('Error en el registro:', error);
+      }
     }
   };
 

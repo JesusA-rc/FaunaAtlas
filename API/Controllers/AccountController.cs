@@ -23,7 +23,8 @@ public class AccountController : BaseApiController
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        if (await UserExists(registerDto.Username)) return BadRequest("El nombre de usuario ya existe");
+        if (await UserExists(registerDto.Username)) return BadRequest("username_taken");
+        if (await EmailExists(registerDto.Email)) return BadRequest("email_taken");
 
         using var hmac = new HMACSHA512();
 
@@ -81,5 +82,10 @@ public class AccountController : BaseApiController
     private async Task<bool> UserExists(string username)
     {
         return await _context.Usuarios.AnyAsync(x => x.UserName == username.ToLower());
+    }
+
+    private async Task<bool> EmailExists(string email)
+    {
+        return await _context.Usuarios.AnyAsync(x => x.Email == email.ToLower());
     }
 }
