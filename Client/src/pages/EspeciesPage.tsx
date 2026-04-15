@@ -3,6 +3,7 @@ import animalService from '../core/services/animalService';
 import { FaArrowRight, FaSearch } from 'react-icons/fa';
 import { type Animal } from '../core/models';
 import StatusDisplay from '../components/Common/StatusDisplay';
+import AnimalDetailModal from '../components/AnimalDetailModal';
 
 const EspeciesPage = () => 
 {
@@ -15,6 +16,14 @@ const EspeciesPage = () =>
   const [visibleCount, setVisibleCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+
+  const handleOpenModal = (animal: Animal) => {
+    setSelectedAnimal(animal);
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     const fetchEspecies = async () => 
@@ -172,7 +181,11 @@ const EspeciesPage = () =>
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {visibleEspecies.map((especie) => (
-                <SpeciesCard key={especie.id} especie={especie} />
+                <SpeciesCard 
+                  key={especie.id} 
+                  especie={especie} 
+                  onClick={() => handleOpenModal(especie)}
+                />
               ))}
               
               {isLoadingMore && [1, 2, 3, 4].map(i => (
@@ -184,6 +197,12 @@ const EspeciesPage = () =>
           </>
         )}
       </div>
+
+      <AnimalDetailModal 
+        isOpen={isModalOpen}
+        animal={selectedAnimal}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
@@ -198,7 +217,7 @@ const LoadingCard = () => (
   </div>
 );
 
-const SpeciesCard = ({ especie }: { especie: Animal }) => 
+const SpeciesCard = ({ especie, onClick }: { especie: Animal, onClick: () => void }) => 
 {
   const fallback = '/animales.png';
   const [imgSrc, setImgSrc] = useState(especie.imagenUrl || fallback);
@@ -208,7 +227,9 @@ const SpeciesCard = ({ especie }: { especie: Animal }) =>
   }, [especie.imagenUrl]);
 
   return (
-    <div className="
+    <div 
+      onClick={onClick}
+      className="
       group 
       bg-[#061B35] 
       rounded-3xl 
@@ -222,7 +243,8 @@ const SpeciesCard = ({ especie }: { especie: Animal }) =>
       flex 
       flex-col 
       h-full 
-      shadow-xl">
+      shadow-xl
+      cursor-pointer">
       <div className="relative aspect-[4/5] overflow-hidden">
         <img 
           src={imgSrc} 
