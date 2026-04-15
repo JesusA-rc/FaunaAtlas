@@ -1,14 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { FaBars, FaTimes, FaTree, FaChevronDown } from 'react-icons/fa';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from '../../core/contexts/AccountContext';
 
 const Navbar = () => 
 {
   const { user, logout } = useAccount();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith('/admin');
 
   const navLinks = [
     { name: 'Home', to: '/' },
@@ -16,6 +20,16 @@ const Navbar = () =>
     { name: 'Hábitats', to: '/habitats' },
     { name: 'Avistamientos', to: '/avistamientos' }
   ];
+
+  const adminLinks = [
+    { name: 'Inicio', to: '/admin' },
+    { name: 'Crear', to: '/admin/crear' },
+    { name: 'Actualizar', to: '/admin/actualizar' },
+    { name: 'Eliminar', to: '/admin/eliminar' },
+    { name: 'Ver', to: '/admin/ver' }
+  ];
+
+  const currentLinks = isAdminPath ? adminLinks : navLinks;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,10 +78,11 @@ const Navbar = () =>
           
           <div className="hidden md:flex items-center gap-10">
             <ul className="flex list-none gap-8">
-              {navLinks.map((link) => (
+              {currentLinks.map((link) => (
                 <li key={link.name}>
                   <NavLink 
                     to={link.to} 
+                    end={link.to === '/admin' || link.to === '/'}
                     className={({ isActive }) => `
                       no-underline text-[13px] font-medium transition-colors 
                       ${isActive ? 'text-mint' : 'text-slate hover:text-white'}
@@ -86,28 +101,65 @@ const Navbar = () =>
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="flex items-center gap-3 group focus:outline-none cursor-pointer"
                   >
-                    <div className="w-10 h-10 rounded-full border-2 border-mint/30 overflow-hidden group-hover:border-mint transition-all">
+                    <div className="
+                      w-10 
+                      h-10 
+                      rounded-full 
+                      border-2 
+                      border-mint/30 
+                      overflow-hidden 
+                      group-hover:border-mint 
+                      transition-all">
                       <img 
                         src={`https://ui-avatars.com/api/?name=${user.username}&background=025849&color=4CC98A`} 
                         alt="Profile" 
                         className="w-full h-full object-cover cursor-pointer"
                       />
                     </div>
-                    <FaChevronDown className={`text-slate text-xs transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    <FaChevronDown className={`
+                      text-slate 
+                      text-xs 
+                      transition-transform 
+                      duration-300 
+                      ${isDropdownOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   <div className={`
-                    absolute top-full right-0 mt-3 w-48 bg-navy border border-white/10 rounded-2xl shadow-2xl py-2 transition-all duration-300
+                      absolute 
+                      top-full 
+                      right-0 
+                      mt-3 
+                      w-48 
+                      bg-navy 
+                      border 
+                      border-white/10 
+                      rounded-2xl 
+                      shadow-2xl 
+                      py-2 
+                      transition-all 
+                      duration-300
                     ${isDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
                   `}>
                     <div className="px-4 py-2 border-b border-white/5">
                       <p className="text-white text-xs font-bold truncate">{user.nombreCompleto}</p>
                       <p className="text-slate text-[10px] truncate">@{user.username}</p>
                     </div>
+                    
+                    {user.rol === 'Admin' && (
+                      <Link 
+                        to="/admin" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/5 transition-all no-underline"
+                      >
+                        Panel de control
+                      </Link>
+                    )}
+
                     <button 
                       onClick={() => {
                         logout();
                         setIsDropdownOpen(false);
+                        navigate('/');
                       }}
                       className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-white/5 transition-all cursor-pointer"
                     >
@@ -117,9 +169,9 @@ const Navbar = () =>
                 </div>
               ) : (
                 <>
-                  <button className="text-white/80 text-sm font-medium hover:text-mint transition-colors">
+                  <Link to="/login" className="text-white/80 text-sm font-medium hover:text-mint transition-colors no-underline">
                     Ingresar
-                  </button>
+                  </Link>
                   <Link to="/register" className="button-primary !px-5 !py-1.5 !text-xs no-underline">
                     Empezar
                   </Link>
@@ -143,10 +195,11 @@ const Navbar = () =>
       `}>
         <div className="container py-12 flex flex-col gap-10 px-6">
           <ul className="flex flex-col gap-6 list-none">
-            {navLinks.map((link) => (
+            {currentLinks.map((link) => (
               <li key={link.name}>
                 <NavLink 
                   to={link.to}
+                  end={link.to === '/admin' || link.to === '/'}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) => `
                     text-2xl font-heading transition-colors
@@ -175,10 +228,32 @@ const Navbar = () =>
                       <p className="text-slate text-sm">@{user.username}</p>
                     </div>
                   </div>
+
+                  {user.rol === 'Admin' && (
+                    <Link 
+                      to="/admin" 
+                      onClick={() => setIsOpen(false)}
+                      className="
+                      w-full 
+                      py-4 
+                      text-center 
+                      rounded-2xl 
+                      bg-mint/10 
+                      text-mint 
+                      font-bold 
+                      border 
+                      border-mint/20
+                      no-underline"
+                    >
+                      Panel de control
+                    </Link>
+                  )}
+
                   <button 
                     onClick={() => {
                       logout();
                       setIsOpen(false);
+                      navigate('/');
                     }}
                     className="
                     w-full 

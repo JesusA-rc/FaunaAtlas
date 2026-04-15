@@ -73,3 +73,8 @@ export interface UserFormValues {
     password: string;
     nombreCompleto: string;
 }
+
+export interface LoginFormValues {
+    username: string;
+    password: string;
+}

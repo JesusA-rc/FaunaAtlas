@@ -5,6 +5,9 @@ import EspeciesPage from '../../pages/EspeciesPage';
 import HabitatsPage from '../../pages/HabitatsPage';
 import AvistamientosPage from '../../pages/AvistamientosPage';
 import RegisterPage from '../../pages/RegisterPage';
+import LoginPage from '../../pages/LoginPage';
+import AdminDashboard from '../../pages/Admin/AdminDashboard';
+import AdminRoute from './AdminRoute';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +33,20 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegisterPage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'admin',
+        element: <AdminRoute />,
+        children: [
+          {
+            path: '',
+            element: <AdminDashboard />,
+          },
+        ],
       },
     ],
   },
