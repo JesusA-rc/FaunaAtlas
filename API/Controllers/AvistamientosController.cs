@@ -13,6 +13,8 @@ public class AvistamientosController(DataContext context) : BaseApiController
     {
         return await context.Avistamientos
             .Include(a => a.Animal)
+            .ThenInclude(an => an.Habitat)
+            .OrderByDescending(a => a.Fecha)
             .Select(a => new AvistamientoDto
             {
                 Id = a.Id,
@@ -23,7 +25,20 @@ public class AvistamientosController(DataContext context) : BaseApiController
                 ReportadoPor = a.ReportadoPor,
                 Notas = a.Notas,
                 Latitud = a.Latitud,
-                Longitud = a.Longitud
+                Longitud = a.Longitud,
+                Animal = a.Animal != null ? new AnimalDto
+                {
+                    Id = a.Animal.Id,
+                    NombreComun = a.Animal.NombreComun,
+                    NombreCientifico = a.Animal.NombreCientifico,
+                    Clase = a.Animal.Clase,
+                    EstadoConservacion = a.Animal.EstadoConservacion,
+                    Dieta = a.Animal.Dieta,
+                    Descripcion = a.Animal.Descripcion,
+                    ImagenUrl = a.Animal.ImagenUrl,
+                    HabitatId = a.Animal.HabitatId,
+                    HabitatNombre = a.Animal.Habitat != null ? a.Animal.Habitat.Nombre : "No definido"
+                } : null
             })
             .ToListAsync();
     }
@@ -33,6 +48,7 @@ public class AvistamientosController(DataContext context) : BaseApiController
     {
         var avistamiento = await context.Avistamientos
             .Include(a => a.Animal)
+            .ThenInclude(an => an.Habitat)
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (avistamiento == null) return NotFound();
@@ -47,7 +63,20 @@ public class AvistamientosController(DataContext context) : BaseApiController
             ReportadoPor = avistamiento.ReportadoPor,
             Notas = avistamiento.Notas,
             Latitud = avistamiento.Latitud,
-            Longitud = avistamiento.Longitud
+            Longitud = avistamiento.Longitud,
+            Animal = avistamiento.Animal != null ? new AnimalDto
+            {
+                Id = avistamiento.Animal.Id,
+                NombreComun = avistamiento.Animal.NombreComun,
+                NombreCientifico = avistamiento.Animal.NombreCientifico,
+                Clase = avistamiento.Animal.Clase,
+                EstadoConservacion = avistamiento.Animal.EstadoConservacion,
+                Dieta = avistamiento.Animal.Dieta,
+                Descripcion = avistamiento.Animal.Descripcion,
+                ImagenUrl = avistamiento.Animal.ImagenUrl,
+                HabitatId = avistamiento.Animal.HabitatId,
+                HabitatNombre = avistamiento.Animal.Habitat != null ? avistamiento.Animal.Habitat.Nombre : "No definido"
+            } : null
         };
     }
 

@@ -11,4 +11,6 @@ public class AvistamientoDto
     public string Notas { get; set; } = string.Empty;
     public double Latitud { get; set; }
     public double Longitud { get; set; }
+
+    public AnimalDto? Animal { get; set; }
 }

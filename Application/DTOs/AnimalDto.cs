@@ -11,4 +11,5 @@ public class AnimalDto
     public string Descripcion { get; set; } = string.Empty;
     public string? ImagenUrl { get; set; }
     public int HabitatId { get; set; }
+    public string? HabitatNombre { get; set; }
 }
