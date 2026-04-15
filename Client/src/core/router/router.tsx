@@ -8,6 +8,9 @@ import RegisterPage from '../../pages/RegisterPage';
 import LoginPage from '../../pages/LoginPage';
 import AdminDashboard from '../../pages/Admin/AdminDashboard';
 import AdminRoute from './AdminRoute';
+import CreateAnimalPage from '../../pages/Admin/CreateAnimalPage';
+import AdminAnimalListPage from '../../pages/Admin/AdminAnimalListPage';
+import UpdateAnimalPage from '../../pages/Admin/UpdateAnimalPage';
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +48,26 @@ export const router = createBrowserRouter([
           {
             path: '',
             element: <AdminDashboard />,
+          },
+          {
+            path: 'crear',
+            element: <CreateAnimalPage />,
+          },
+          {
+            path: 'actualizar',
+            element: <AdminAnimalListPage />,
+          },
+          {
+            path: 'actualizar/:id',
+            element: <UpdateAnimalPage />,
+          },
+          {
+            path: 'eliminar',
+            element: <AdminAnimalListPage />,
+          },
+          {
+            path: 'ver',
+            element: <AdminAnimalListPage />,
           },
         ],
       },

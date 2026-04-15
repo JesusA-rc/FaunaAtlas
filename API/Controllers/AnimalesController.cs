@@ -56,6 +56,11 @@ public class AnimalesController(DataContext context) : BaseApiController
             return BadRequest("El Habitat especificado no existe.");
         }
 
+        if (await context.Animales.AnyAsync(a => a.NombreComun == animalDto.NombreComun || a.NombreCientifico == animalDto.NombreCientifico))
+        {
+            return BadRequest("Ya existe una especie con este Nombre Común o Nombre Científico.");
+        }
+
         var animal = new Animal
         {
             NombreComun = animalDto.NombreComun,
@@ -82,6 +87,11 @@ public class AnimalesController(DataContext context) : BaseApiController
 
         var animal = await context.Animales.FindAsync(id);
         if (animal == null) return NotFound();
+
+        if (await context.Animales.AnyAsync(a => a.Id != id && (a.NombreComun == animalDto.NombreComun || a.NombreCientifico == animalDto.NombreCientifico)))
+        {
+            return BadRequest("Ya existe otra especie con este Nombre Común o Nombre Científico.");
+        }
 
         if (animal.HabitatId != animalDto.HabitatId && !await context.Habitats.AnyAsync(h => h.Id == animalDto.HabitatId))
         {
