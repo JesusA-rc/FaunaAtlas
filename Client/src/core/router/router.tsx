@@ -4,6 +4,7 @@ import HomePage from '../../pages/HomePage';
 import EspeciesPage from '../../pages/EspeciesPage';
 import HabitatsPage from '../../pages/HabitatsPage';
 import AvistamientosPage from '../../pages/AvistamientosPage';
+import RegisterPage from '../../pages/RegisterPage';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: 'avistamientos',
         element: <AvistamientosPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
       },
     ],
   },

@@ -59,3 +59,17 @@ export interface Usuario {
     fechaRegistro: string;
     ultimoLogin?: string;
 }
+
+export interface User {
+    username: string;
+    token: string;
+    nombreCompleto: string;
+    rol: string;
+}
+
+export interface UserFormValues {
+    username: string;
+    email: string;
+    password: string;
+    nombreCompleto: string;
+}

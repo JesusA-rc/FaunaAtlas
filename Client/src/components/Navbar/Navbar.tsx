@@ -1,10 +1,14 @@
-import { useState } from 'react';
-import { FaBars, FaTimes, FaTree } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { FaBars, FaTimes, FaTree, FaChevronDown } from 'react-icons/fa';
+import { NavLink, Link } from 'react-router-dom';
+import { useAccount } from '../../core/contexts/AccountContext';
 
 const Navbar = () => 
 {
+  const { user, logout } = useAccount();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { name: 'Home', to: '/' },
@@ -12,6 +16,16 @@ const Navbar = () =>
     { name: 'Hábitats', to: '/habitats' },
     { name: 'Avistamientos', to: '/avistamientos' }
   ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -28,7 +42,7 @@ const Navbar = () =>
         backdrop-blur-md
         border-b
         border-white/5">
-        <div className="container flex justify-between items-center w-full">
+        <div className="container flex justify-between items-center w-full px-4">
           <div className="flex items-center gap-3">
             <div className="
               w-10 
@@ -48,17 +62,8 @@ const Navbar = () =>
             <span className="font-heading font-bold text-xl text-white tracking-tight">Fauna Atlas</span>
           </div>
           
-          <div className="hidden md:flex flex-col items-end gap-2 mt-2">
-            <div className="flex items-center gap-4">
-              <button className="text-white/80 text-sm font-medium hover:text-mint transition-colors">
-                Ingresar
-              </button>
-              <button className="button-primary !px-5 !py-1.5 !text-xs">
-                Empezar
-              </button>
-            </div>
-
-            <ul className="flex list-none gap-8 mb-1">
+          <div className="hidden md:flex items-center gap-10">
+            <ul className="flex list-none gap-8">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <NavLink 
@@ -73,6 +78,54 @@ const Navbar = () =>
                 </li>
               ))}
             </ul>
+
+            <div className="flex items-center gap-4">
+              {user ? (
+                <div className="relative" ref={dropdownRef}>
+                  <button 
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="flex items-center gap-3 group focus:outline-none cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-full border-2 border-mint/30 overflow-hidden group-hover:border-mint transition-all">
+                      <img 
+                        src={`https://ui-avatars.com/api/?name=${user.username}&background=025849&color=4CC98A`} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover cursor-pointer"
+                      />
+                    </div>
+                    <FaChevronDown className={`text-slate text-xs transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <div className={`
+                    absolute top-full right-0 mt-3 w-48 bg-navy border border-white/10 rounded-2xl shadow-2xl py-2 transition-all duration-300
+                    ${isDropdownOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}
+                  `}>
+                    <div className="px-4 py-2 border-b border-white/5">
+                      <p className="text-white text-xs font-bold truncate">{user.nombreCompleto}</p>
+                      <p className="text-slate text-[10px] truncate">@{user.username}</p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        logout();
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-white/5 transition-all cursor-pointer"
+                    >
+                      Cerrar sesión
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <button className="text-white/80 text-sm font-medium hover:text-mint transition-colors">
+                    Ingresar
+                  </button>
+                  <Link to="/register" className="button-primary !px-5 !py-1.5 !text-xs no-underline">
+                    Empezar
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
 
           <button 
@@ -88,7 +141,7 @@ const Navbar = () =>
         fixed inset-0 top-20 bg-[#011E40] z-[900] md:hidden transition-all duration-300 ease-in-out
         ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}
       `}>
-        <div className="container py-12 flex flex-col gap-10">
+        <div className="container py-12 flex flex-col gap-10 px-6">
           <ul className="flex flex-col gap-6 list-none">
             {navLinks.map((link) => (
               <li key={link.name}>
@@ -109,12 +162,53 @@ const Navbar = () =>
           <div className="w-full h-px bg-white/10"></div>
           
           <div className="flex flex-col gap-4">
-            <button className="button-secondary w-full">
-              Ingresar
-            </button>
-            <button className="button-primary w-full">
-              Empezar
-            </button>
+            {user ? (
+               <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl ">
+                    <img 
+                      src={`https://ui-avatars.com/api/?name=${user.username}&background=025849&color=4CC98A`} 
+                      alt="Profile" 
+                      className="w-12 h-12 rounded-full border-2 border-mint/30"
+                    />
+                    <div>
+                      <p className="text-white font-bold">{user.nombreCompleto}</p>
+                      <p className="text-slate text-sm">@{user.username}</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      logout();
+                      setIsOpen(false);
+                    }}
+                    className="
+                    w-full 
+                    py-4 
+                    text-center 
+                    rounded-2xl 
+                    bg-red-500/10 
+                    text-red-500 
+                    font-bold 
+                    border 
+                    border-red-500/20
+                    cursor-pointer"
+                  >
+                    Cerrar sesión
+                  </button>
+               </div>
+            ) : (
+              <>
+                <button className="button-secondary w-full">
+                  Ingresar
+                </button>
+                <Link 
+                  to="/register" 
+                  onClick={() => setIsOpen(false)}
+                  className="button-primary w-full text-center no-underline"
+                >
+                  Empezar
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
