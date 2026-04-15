@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -31,7 +32,7 @@ public class AnimalesController(DataContext context) : BaseApiController
         return animal.ToDto();
     }
 
-    [HttpPost]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<AnimalDto>> CreateAnimal(AnimalDto animalDto)
     {
@@ -51,6 +52,7 @@ public class AnimalesController(DataContext context) : BaseApiController
         return CreatedAtAction(nameof(GetAnimal), new { id = animal.Id }, animal.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateAnimal(int id, AnimalDto animalDto)
     {
@@ -66,6 +68,7 @@ public class AnimalesController(DataContext context) : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAnimal(int id)
     {

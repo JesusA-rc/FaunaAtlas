@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -25,6 +26,7 @@ public class NoticiasController(DataContext context) : BaseApiController
         return noticia.ToDto();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<NoticiaDto>> CreateNoticia(NoticiaDto noticiaDto)
     {
@@ -43,6 +45,7 @@ public class NoticiasController(DataContext context) : BaseApiController
         return CreatedAtAction(nameof(GetNoticia), new { id = noticia.Id }, noticia.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateNoticia(int id, NoticiaDto noticiaDto)
     {
@@ -61,6 +64,7 @@ public class NoticiasController(DataContext context) : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteNoticia(int id)
     {

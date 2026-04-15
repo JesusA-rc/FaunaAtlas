@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -25,6 +26,7 @@ public class HabitatsController(DataContext context) : BaseApiController
         return habitat.ToDto();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<HabitatDto>> CreateHabitat(HabitatDto habitatDto)
     {
@@ -40,6 +42,7 @@ public class HabitatsController(DataContext context) : BaseApiController
         return CreatedAtAction(nameof(GetHabitat), new { id = habitat.Id }, habitat.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateHabitat(int id, HabitatDto habitatDto)
     {
@@ -55,6 +58,7 @@ public class HabitatsController(DataContext context) : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteHabitat(int id)
     {
