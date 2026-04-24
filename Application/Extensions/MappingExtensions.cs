@@ -115,4 +115,25 @@ public static class MappingExtensions
         n.FechaPublicacion = dto.FechaPublicacion;
         n.Autor = dto.Autor;
     }
+
+    public static ZooDto ToDto(this Zoo zoo)
+    {
+        return new ZooDto
+        {
+            Id = zoo.Id,
+            Nombre = zoo.Nombre,
+            Ubicacion = zoo.Ubicacion,
+            Descripcion = zoo.Descripcion,
+            ImagenUrl = zoo.ImagenUrl,
+            Animales = zoo.Animales?.Select(a => a.ToDto()).ToList()
+        };
+    }
+
+    public static void UpdateEntity(this ZooDto dto, Zoo zoo)
+    {
+        zoo.Nombre = dto.Nombre;
+        zoo.Ubicacion = dto.Ubicacion;
+        zoo.Descripcion = dto.Descripcion;
+        zoo.ImagenUrl = dto.ImagenUrl;
+    }
 }

@@ -14,6 +14,7 @@ public class DataContext : DbContext
     public DbSet<Avistamiento> Avistamientos { get; set; } = null!;
     public DbSet<Noticia> Noticias { get; set; } = null!;
     public DbSet<Usuario> Usuarios { get; set; } = null!;
+    public DbSet<Zoo> Zoos { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,5 +47,10 @@ public class DataContext : DbContext
             .WithMany()
             .HasForeignKey(n => n.HabitatId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Zoo>()
+            .HasMany(z => z.Animales)
+            .WithMany(a => a.Zoos)
+            .UsingEntity(j => j.ToTable("ZooAnimal"));
     }
 }

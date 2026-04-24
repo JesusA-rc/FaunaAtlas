@@ -14,4 +14,5 @@ public class Animal
 
     public Habitat Habitat { get; set; } = null!;
     public ICollection<Avistamiento> Avistamientos { get; set; } = new List<Avistamiento>();
+    public ICollection<Zoo> Zoos { get; set; } = new List<Zoo>();
 }
