@@ -244,5 +244,93 @@ public static class Seed
             await context.Noticias.AddRangeAsync(noticias);
             await context.SaveChangesAsync();
         }
+
+        if (!context.Zoos.Any())
+        {
+            var zoos = new List<Zoo>
+            {
+                new Zoo
+                {
+                    Nombre = "Zoológico de Chapultepec",
+                    Ubicacion = "Ciudad de México",
+                    Descripcion = "Uno de los zoológicos más antiguos de México, famoso por su programa de conservación del panda gigante y el ajolote.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1554471694-39910d931920?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Ajolote"),
+                        animales.First(a => a.NombreComun == "Lobo Gris Mexicano"),
+                        animales.First(a => a.NombreComun == "Jaguar")
+                    }
+                },
+                new Zoo
+                {
+                    Nombre = "Africam Safari",
+                    Ubicacion = "Puebla",
+                    Descripcion = "Parque de conservación donde los animales deambulan en áreas que simulan sus hábitats naturales, permitiendo recorridos en vehículo.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1516475429286-465d815a0df7?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Jaguar"),
+                        animales.First(a => a.NombreComun == "Berrendo"),
+                        animales.First(a => a.NombreComun == "Puma")
+                    }
+                },
+                new Zoo
+                {
+                    Nombre = "Zoológico de Guadalajara",
+                    Ubicacion = "Guadalajara, Jalisco",
+                    Descripcion = "Considerado uno de los más importantes del país, con una gran colección de especies y un acuario impresionante.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Jaguar"),
+                        animales.First(a => a.NombreComun == "Mono Zaraguato"),
+                        animales.First(a => a.NombreComun == "Tapir")
+                    }
+                },
+                new Zoo
+                {
+                    Nombre = "Centro Ecológico de Sonora",
+                    Ubicacion = "Hermosillo, Sonora",
+                    Descripcion = "Zoológico regional que exhibe especies propias del desierto sonorense y otras partes del mundo.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Berrendo"),
+                        animales.First(a => a.NombreComun == "Águila Real"),
+                        animales.First(a => a.NombreComun == "Puma")
+                    }
+                },
+                new Zoo
+                {
+                    Nombre = "Museo del Desierto",
+                    Ubicacion = "Saltillo, Coahuila",
+                    Descripcion = "Institución que destaca por su enfoque en la historia natural y la conservación de especies del desierto mexicano como el lobo gris.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1528114039593-4366cc08227d?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Oso Negro"),
+                        animales.First(a => a.NombreComun == "Perrito de la Pradera"),
+                        animales.First(a => a.NombreComun == "Lobo Gris Mexicano")
+                    }
+                },
+                new Zoo
+                {
+                    Nombre = "Zoológico La Pastora",
+                    Ubicacion = "Guadalupe, Nuevo León",
+                    Descripcion = "Importante centro de recreación y conservación ubicado en la zona metropolitana de Monterrey.",
+                    ImagenUrl = "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=800",
+                    Animales = new List<Animal>
+                    {
+                        animales.First(a => a.NombreComun == "Oso Negro"),
+                        animales.First(a => a.NombreComun == "Jaguar"),
+                        animales.First(a => a.NombreComun == "Flamenco Caribeño")
+                    }
+                }
+            };
+
+            await context.Zoos.AddRangeAsync(zoos);
+            await context.SaveChangesAsync();
+        }
     }
 }
