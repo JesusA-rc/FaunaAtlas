@@ -8,6 +8,7 @@ export interface Animal {
     dieta: string;
     descripcion: string;
     imagenUrl?: string;
+    habitatNombre?: string;
     habitat?: Habitat;
     avistamientos?: Avistamiento[];
     zoos?: Zoo[];

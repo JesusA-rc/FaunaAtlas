@@ -13,6 +13,9 @@ const EspeciesPage = () =>
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [claseFilter, setClaseFilter] = useState('Todas');
+  const [estadoFilter, setEstadoFilter] = useState('Todos');
+  const [dietaFilter, setDietaFilter] = useState('Todas');
+  const [habitatFilter, setHabitatFilter] = useState('Todos');
   
   const [visibleCount, setVisibleCount] = useState(12);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -48,15 +51,21 @@ const EspeciesPage = () =>
   useEffect(() => 
   {
     setVisibleCount(12);
-  }, [searchTerm, claseFilter]);
+  }, [searchTerm, claseFilter, estadoFilter, dietaFilter, habitatFilter]);
 
   const clases = ['Todas', ...new Set(especies.map(e => e.clase).filter(Boolean))];
+  const estados = ['Todos', ...new Set(especies.map(e => e.estadoConservacion).filter(Boolean))];
+  const dietas = ['Todas', ...new Set(especies.map(e => e.dieta).filter(Boolean))];
+  const habitats = ['Todos', ...new Set(especies.map(e => e.habitatNombre).filter(Boolean))];
 
   const filteredEspecies = especies.filter(e => {
     const matchesSearch = e.nombreComun?.toLowerCase().includes(searchTerm.toLowerCase()) 
       || e.nombreCientifico?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesClase = claseFilter === 'Todas' || e.clase === claseFilter;
-    return matchesSearch && matchesClase;
+    const matchesEstado = estadoFilter === 'Todos' || e.estadoConservacion === estadoFilter;
+    const matchesDieta = dietaFilter === 'Todas' || e.dieta === dietaFilter;
+    const matchesHabitat = habitatFilter === 'Todos' || e.habitatNombre === habitatFilter;
+    return matchesSearch && matchesClase && matchesEstado && matchesDieta && matchesHabitat;
   });
 
   const visibleEspecies = filteredEspecies.slice(0, visibleCount);
@@ -95,7 +104,7 @@ const EspeciesPage = () =>
             especies más raras.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-4 w-full">
+          <div className="flex flex-col gap-4 w-full">
             <div className="relative flex-grow group">
               <FaSearch className="
                 absolute 
@@ -128,34 +137,77 @@ const EspeciesPage = () =>
               />
             </div>
 
-            <div className="relative w-full md:w-64">
-              <select 
-                value={claseFilter}
-                onChange={(e) => setClaseFilter(e.target.value)}
-                className="
-                  w-full 
-                  bg-white/5 
-                  border 
-                  border-white/10 
-                  rounded-2xl 
-                  py-4 
-                  px-6 
-                  text-white 
-                  appearance-none 
-                  focus:outline-none 
-                  focus:border-mint/50 
-                  transition-all 
-                  cursor-pointer 
-                  shadow-inner"
-              >
-                {clases.map(clase => (
-                  <option key={clase} value={clase} className="bg-navy text-white">
-                    {clase}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate/50">
-                 <FaArrowRight className="rotate-90" size={12} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full">
+              <div className="relative">
+                <select 
+                  value={claseFilter}
+                  onChange={(e) => setClaseFilter(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-5 text-white text-sm appearance-none focus:outline-none focus:border-mint/50 transition-all cursor-pointer shadow-inner"
+                >
+                  <option disabled value="Todas" className="bg-navy text-slate/50">Filtrar por Clase</option>
+                  {clases.map(clase => (
+                    <option key={clase} value={clase} className="bg-navy text-white">
+                      {clase === 'Todas' ? 'Todas las Clases' : clase}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate/50">
+                   <FaArrowRight className="rotate-90" size={10} />
+                </div>
+              </div>
+
+              <div className="relative">
+                <select 
+                  value={estadoFilter}
+                  onChange={(e) => setEstadoFilter(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-5 text-white text-sm appearance-none focus:outline-none focus:border-mint/50 transition-all cursor-pointer shadow-inner"
+                >
+                  <option disabled value="Todos" className="bg-navy text-slate/50">Estado de Conservación</option>
+                  {estados.map(estado => (
+                    <option key={estado} value={estado} className="bg-navy text-white">
+                      {estado === 'Todos' ? 'Cualquier Estado' : estado}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate/50">
+                   <FaArrowRight className="rotate-90" size={10} />
+                </div>
+              </div>
+
+              <div className="relative">
+                <select 
+                  value={dietaFilter}
+                  onChange={(e) => setDietaFilter(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-5 text-white text-sm appearance-none focus:outline-none focus:border-mint/50 transition-all cursor-pointer shadow-inner"
+                >
+                  <option disabled value="Todas" className="bg-navy text-slate/50">Dieta</option>
+                  {dietas.map(dieta => (
+                    <option key={dieta} value={dieta} className="bg-navy text-white">
+                      {dieta === 'Todas' ? 'Cualquier Dieta' : dieta}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate/50">
+                   <FaArrowRight className="rotate-90" size={10} />
+                </div>
+              </div>
+
+              <div className="relative">
+                <select 
+                  value={habitatFilter}
+                  onChange={(e) => setHabitatFilter(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-5 text-white text-sm appearance-none focus:outline-none focus:border-mint/50 transition-all cursor-pointer shadow-inner"
+                >
+                  <option disabled value="Todos" className="bg-navy text-slate/50">Hábitat</option>
+                  {habitats.map(habitat => (
+                    <option key={habitat} value={habitat} className="bg-navy text-white">
+                      {habitat === 'Todos' ? 'Cualquier Hábitat' : habitat}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate/50">
+                   <FaArrowRight className="rotate-90" size={10} />
+                </div>
               </div>
             </div>
           </div>

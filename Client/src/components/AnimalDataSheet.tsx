@@ -51,7 +51,7 @@ const AnimalDataSheet = ({ animal, showDescription = true }: Props) =>
               Hábitat
             </p>
             <p className="text-white font-medium text-sm md:text-base">
-              {animal.habitat?.nombre || 'General'}
+              {animal.habitatNombre || animal.habitat?.nombre || 'General'}
             </p>
           </div>
         </div>
