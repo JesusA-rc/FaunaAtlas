@@ -12,4 +12,5 @@ public class AnimalDto
     public string? ImagenUrl { get; set; }
     public int HabitatId { get; set; }
     public string? HabitatNombre { get; set; }
+    public List<ZooDto>? Zoos { get; set; }
 }

@@ -1,4 +1,4 @@
-import { FaPaw, FaLeaf, FaDna, FaShieldAlt, FaUtensils } from 'react-icons/fa';
+import { FaPaw, FaLeaf, FaDna, FaShieldAlt, FaUtensils, FaMapMarkerAlt } from 'react-icons/fa';
 import { type Animal } from '../core/models';
 
 interface Props {
@@ -75,6 +75,27 @@ const AnimalDataSheet = ({ animal, showDescription = true }: Props) =>
           md:text-base">
             {animal.descripcion}
           </p>
+        </div>
+      )}
+
+      {animal.zoos && animal.zoos.length > 0 && (
+        <div className="animate-in fade-in slide-in-from-top-4 duration-500 delay-100 mt-6">
+          <h4 className="flex items-center gap-2 text-white font-bold mb-4">
+            <FaMapMarkerAlt className="text-mint" />
+            <span>Zoológicos donde se encuentra</span>
+          </h4>
+          <div className="flex flex-wrap gap-2 md:gap-3">
+            {animal.zoos.map((zoo) => (
+              <div 
+                key={zoo.id} 
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 flex items-center gap-2 hover:border-mint/50 transition-colors"
+                title={zoo.ubicacion}
+              >
+                <div className="w-2 h-2 rounded-full bg-mint shadow-[0_0_8px_rgba(46,204,113,0.6)]"></div>
+                <span className="text-white text-sm font-medium">{zoo.nombre}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

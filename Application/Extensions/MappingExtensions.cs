@@ -18,7 +18,15 @@ public static class MappingExtensions
             Descripcion = animal.Descripcion,
             ImagenUrl = animal.ImagenUrl,
             HabitatId = animal.HabitatId,
-            HabitatNombre = animal.Habitat?.Nombre
+            HabitatNombre = animal.Habitat?.Nombre,
+            Zoos = animal.Zoos?.Select(z => new ZooDto 
+            { 
+                Id = z.Id, 
+                Nombre = z.Nombre, 
+                Ubicacion = z.Ubicacion,
+                Descripcion = z.Descripcion,
+                ImagenUrl = z.ImagenUrl
+            }).ToList()
         };
     }
 

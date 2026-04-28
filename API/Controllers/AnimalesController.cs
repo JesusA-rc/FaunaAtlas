@@ -15,6 +15,7 @@ public class AnimalesController(DataContext context) : BaseApiController
     {
         var animals = await context.Animales
             .Include(a => a.Habitat)
+            .Include(a => a.Zoos)
             .ToListAsync();
             
         return Ok(animals.Select(a => a.ToDto()));
@@ -25,6 +26,7 @@ public class AnimalesController(DataContext context) : BaseApiController
     {
         var animal = await context.Animales
             .Include(a => a.Habitat)
+            .Include(a => a.Zoos)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (animal == null) return NotFound();

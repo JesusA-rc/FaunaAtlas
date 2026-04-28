@@ -10,6 +10,7 @@ export interface Animal {
     imagenUrl?: string;
     habitat?: Habitat;
     avistamientos?: Avistamiento[];
+    zoos?: Zoo[];
 }
 
 export interface Habitat {
@@ -18,6 +19,15 @@ export interface Habitat {
     tipo: string;
     clima: string;
     region: string;
+    descripcion: string;
+    imagenUrl?: string;
+    animales?: Animal[];
+}
+
+export interface Zoo {
+    id: number;
+    nombre: string;
+    ubicacion: string;
     descripcion: string;
     imagenUrl?: string;
     animales?: Animal[];
