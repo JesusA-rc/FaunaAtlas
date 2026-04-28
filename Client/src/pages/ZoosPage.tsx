@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import zooService from '../core/services/zooService';
 import { type Zoo } from '../core/models';
 import { FaArrowRight, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import StatusDisplay from '../components/Common/StatusDisplay';
 
 const ZoosPage = () => 
@@ -82,7 +83,9 @@ const ZooCard = ({ zoo }: { zoo: Zoo }) =>
   }, [zoo.imagenUrl]);
 
   return (
-    <div className="
+    <Link 
+      to={`/zoos/${zoo.id}`}
+      className="
         group 
         relative 
         h-[450px] 
@@ -93,7 +96,9 @@ const ZooCard = ({ zoo }: { zoo: Zoo }) =>
         shadow-2xl 
         transition-all 
         duration-700 
-        hover:-translate-y-4">
+        hover:-translate-y-4
+        block
+        no-underline">
       <img 
         src={imgSrc} 
         alt={zoo.nombre}
@@ -202,7 +207,7 @@ const ZooCard = ({ zoo }: { zoo: Zoo }) =>
            </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
