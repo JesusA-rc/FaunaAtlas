@@ -3,6 +3,7 @@ import AppLayout from '../layout/AppLayout';
 import HomePage from '../../pages/HomePage';
 import EspeciesPage from '../../pages/EspeciesPage';
 import HabitatsPage from '../../pages/HabitatsPage';
+import ZoosPage from '../../pages/ZoosPage';
 import AvistamientosPage from '../../pages/AvistamientosPage';
 import RegisterPage from '../../pages/RegisterPage';
 import LoginPage from '../../pages/LoginPage';
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: 'habitats',
         element: <HabitatsPage />,
+      },
+      {
+        path: 'zoos',
+        element: <ZoosPage />,
       },
       {
         path: 'avistamientos',

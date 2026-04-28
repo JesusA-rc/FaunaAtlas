@@ -18,6 +18,7 @@ const Navbar = () =>
     { name: 'Home', to: '/' },
     { name: 'Especies', to: '/especies' },
     { name: 'Hábitats', to: '/habitats' },
+    { name: 'Zoológicos', to: '/zoos' },
     { name: 'Avistamientos', to: '/avistamientos' }
   ];
 
